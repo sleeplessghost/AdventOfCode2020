@@ -1,5 +1,5 @@
+from math import prod
 from itertools import combinations
-from functools import reduce
 
 numbers = [int(n) for n in open('in/01.txt')]
 
@@ -21,7 +21,7 @@ def calcB(numbers):
 
 def combi(numbers, count, targetVal):
     for seq in combinations(numbers, count):
-        if sum(seq) == targetVal: return reduce(lambda a,b : a*b, seq)
+        if sum(seq) == targetVal: return prod(seq)
 
 print('two numbers sum to 2020 gives: ', calcA(numbers))
 print('three numbers sum to 2020 gives: ', calcB(numbers))
