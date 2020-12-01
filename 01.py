@@ -5,19 +5,14 @@ numbers = [int(n) for n in open('in/01.txt')]
 
 def calcA(numbers):
     for i, a in enumerate(numbers):
-        for j, b in enumerate(numbers):
-            if j <= i: continue
+        for b in numbers[i+1:]:
             if a + b == 2020: return a * b
-    return -1
 
 def calcB(numbers):
     for i, a in enumerate(numbers):
-        for j, b in enumerate(numbers):
-            if j <= i: continue
-            for k, c in enumerate(numbers):
-                if k <= i or k <= j: continue
+        for j, b in enumerate(numbers[i+1:], i+1):
+            for c in numbers[j+1:]:
                 if a + b + c == 2020: return a * b * c
-    return -1
 
 def combi(numbers, count, target):
     for seq in combinations(numbers, count):
