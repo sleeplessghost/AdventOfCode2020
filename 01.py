@@ -19,9 +19,9 @@ def calcB(numbers):
                 if a + b + c == 2020: return a * b * c
     return -1
 
-def combi(numbers, count, targetVal):
+def combi(numbers, count, target):
     for seq in combinations(numbers, count):
-        if sum(seq) == targetVal: return prod(seq)
+        if sum(seq) == target: return prod(seq)
 
 print('two numbers sum to 2020 gives: ', calcA(numbers))
 print('three numbers sum to 2020 gives: ', calcB(numbers))
