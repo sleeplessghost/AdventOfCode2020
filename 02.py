@@ -24,7 +24,7 @@ def countB(lines):
     return count
 
 def isValidLetterCount(min, max, letter, password):
-    return password.count(letter) in range(min, max + 1)
+    return min <= password.count(letter) <= max
 
 def isValidIndex(a, b, letter, password):
     i,j = a - 1, b - 1
