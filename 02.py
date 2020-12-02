@@ -1,7 +1,7 @@
 import re
 
 def parse(line) -> (int, int, str, str):
-    parsed = re.search("(?P<a>[0-9]+)-(?P<b>[0-9]+) (?P<letter>[a-zA-Z]): (?P<password>[a-zA-Z]+)", line)
+    parsed = re.match("(?P<a>[0-9]+)-(?P<b>[0-9]+) (?P<letter>[a-zA-Z]): (?P<password>[a-zA-Z]+)", line)
     return (int(parsed.group('a')), int(parsed.group('b')), parsed.group('letter'), parsed.group('password'))
 
 def countA(lines):
@@ -17,12 +17,11 @@ def countB(lines):
     count = 0
     for line in lines:
         (a, b, letter, password) = parse(line)
-        a -= 1
-        b -= 1
-        if ((password[a] == letter or password[b] == letter) and (password[a] != password[b])):
+        (a, b) = (a - 1, b - 1)
+        if (password[a] != password[b] and (password[a] == letter or password[b] == letter)):
             count += 1
     return count
 
 lines = [line for line in open('in/02.txt')]
-print(countA(lines))
-print(countB(lines))
+print('valid PW by letter count:', countA(lines))
+print('valid PW by index:', countB(lines))
