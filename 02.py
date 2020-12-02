@@ -23,6 +23,13 @@ def countB(lines):
             count += 1
     return count
 
+lines = [line for line in open('in/02.txt')]
+
+print('valid PW by letter count:', countA(lines))
+print('valid PW by index:', countB(lines))
+
+##################################################################################
+
 def isValidLetterCount(min, max, letter, password):
     return min <= password.count(letter) <= max
 
@@ -32,11 +39,6 @@ def isValidIndex(a, b, letter, password):
 
 def getValidPWCount(lines, isValid: Callable):
     return sum(isValid(*parse(line)) for line in lines)
-
-lines = [line for line in open('in/02.txt')]
-
-print('valid PW by letter count:', countA(lines))
-print('valid PW by index:', countB(lines))
 
 print('valid PW by letter count:', getValidPWCount(lines, isValidLetterCount))
 print('valid PW by index:', getValidPWCount(lines, isValidIndex))
