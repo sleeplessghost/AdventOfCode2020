@@ -2,7 +2,7 @@ import re
 from typing import Callable
 
 def parse(line) -> (int, int, str, str):
-    parsed = re.match("(?P<a>[0-9]+)-(?P<b>[0-9]+) (?P<letter>[a-zA-Z]): (?P<password>[a-zA-Z]+)", line)
+    parsed = re.match(r"(?P<a>\d+)-(?P<b>\d+) (?P<letter>\S): (?P<password>\S+)", line)
     return (int(parsed.group('a')), int(parsed.group('b')), parsed.group('letter'), parsed.group('password'))
 
 def countA(lines):
