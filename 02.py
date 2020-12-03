@@ -36,7 +36,7 @@ def isValidLetterCount(min, max, letter, password):
 
 def isValidIndex(a, b, letter, password):
     i,j = a - 1, b - 1
-    return password[i] != password[j] and (password[i] == letter or password[j] == letter)
+    return (password[i] == letter) != (password[j] == letter)
 
 def getValidPWCount(lines, isValid: Callable):
     return sum(isValid(*parse(line)) for line in lines)
