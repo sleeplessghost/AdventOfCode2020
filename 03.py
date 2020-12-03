@@ -1,12 +1,4 @@
-from copy import deepcopy
-
-lines = [line.strip() for line in open('in/03.txt') if line]
-map = []
-
-for row, line in enumerate(lines):
-    map.append([])
-    for c in line:
-        map[row].append(c)
+map = [line.strip() for line in open('in/03.txt') if line]
 
 def checkFor(dx, dy):
     y, x, trees, length = 0, 0, 0, len(map[0])
