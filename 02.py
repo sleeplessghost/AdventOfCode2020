@@ -1,5 +1,4 @@
 import re
-from typing import Callable
 
 def parse(line) -> (int, int, str, str):
     parsed = re.match(r"(\d+)-(\d+) (\S): (\S+)", line)
@@ -25,21 +24,5 @@ def countB(lines):
     return count
 
 lines = [line for line in open('in/02.txt')]
-
 print('valid PW by letter count:', countA(lines))
 print('valid PW by index:', countB(lines))
-
-##################################################################################
-
-def isValidLetterCount(min, max, letter, password):
-    return min <= password.count(letter) <= max
-
-def isValidIndex(a, b, letter, password):
-    i,j = a - 1, b - 1
-    return (password[i] == letter) != (password[j] == letter)
-
-def getValidPWCount(lines, isValid: Callable):
-    return sum(isValid(*parse(line)) for line in lines)
-
-print('valid PW by letter count:', getValidPWCount(lines, isValidLetterCount))
-print('valid PW by index:', getValidPWCount(lines, isValidIndex))
