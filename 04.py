@@ -18,12 +18,12 @@ def passportIsValid(passport):
         all(fieldIsValid(field, passport[field]) for field in REQUIRED_FIELDS))
 
 def fieldIsValid(name, value):
-    if (name == 'byr'): return all(str.isdigit(c) for c in value) and 1920 <= int(value) <= 2002
-    elif (name == 'iyr'): return all(str.isdigit(c) for c in value) and 2010 <= int(value) <= 2020
-    elif (name == 'eyr'): return all(str.isdigit(c) for c in value) and 2020 <= int(value) <= 2030
+    if (name == 'byr'): return str.isdigit(value) and 1920 <= int(value) <= 2002
+    elif (name == 'iyr'): return str.isdigit(value) and 2010 <= int(value) <= 2020
+    elif (name == 'eyr'): return str.isdigit(value) and 2020 <= int(value) <= 2030
     elif (name == 'hcl'): return re.match(r'^#[a-zA-Z0-9]{6}$', value) != None
     elif (name == 'ecl'): return value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
-    elif (name == 'pid'): return all(str.isdigit(c) for c in value) and len(value) == 9
+    elif (name == 'pid'): return str.isdigit(value) and len(value) == 9
     elif (name == 'hgt'):
         measurement = value[-2:]
         height = value[0:-2]
