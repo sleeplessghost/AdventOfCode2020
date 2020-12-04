@@ -22,7 +22,7 @@ def fieldIsValid(name, value):
     elif (name == 'hgt'):
         measurement = value[-2:]
         height = value[0:-2]
-        return (str.isdigit(c) for c in height) and (
+        return str.isdigit(height) and (
             (measurement == 'cm' and 150 <= int(height) <= 193) or
             (measurement == 'in' and 59 <= int(height) <= 76))
 
