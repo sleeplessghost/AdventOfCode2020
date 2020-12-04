@@ -20,11 +20,11 @@ def fieldIsValid(name, value):
     elif (name == 'ecl'): return value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
     elif (name == 'pid'): return str.isdigit(value) and len(value) == 9
     elif (name == 'hgt'):
-        measurement = value[-2:]
+        units = value[-2:]
         height = value[0:-2]
         return str.isdigit(height) and (
-            (measurement == 'cm' and 150 <= int(height) <= 193) or
-            (measurement == 'in' and 59 <= int(height) <= 76))
+            (units == 'cm' and 150 <= int(height) <= 193) or
+            (units == 'in' and 59 <= int(height) <= 76))
 
 input = open('in/04.txt').read().split('\n\n')
 passports = [parsePassport(p) for p in input]
