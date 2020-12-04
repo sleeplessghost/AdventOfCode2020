@@ -21,7 +21,7 @@ def fieldIsValid(name, value):
     elif (name == 'pid'): return str.isdigit(value) and len(value) == 9
     elif (name == 'hgt'):
         units = value[-2:]
-        height = value[0:-2]
+        height = value[:-2]
         return str.isdigit(height) and (
             (units == 'cm' and 150 <= int(height) <= 193) or
             (units == 'in' and 59 <= int(height) <= 76))
