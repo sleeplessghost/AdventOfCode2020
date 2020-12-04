@@ -3,12 +3,7 @@ import re
 REQUIRED_FIELDS = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
 
 def parsePassport(passportInput):
-    split = passportInput.replace('\n', ' ').strip().split(' ')
-    passport = {}
-    for part in split:
-        pType, pValue = part.split(':')
-        passport[pType] = pValue
-    return passport
+    return dict(re.findall(r'(\S+):(\S+)', passportInput))
 
 def passportHasRequiredFields(passport):
     return all(field in passport for field in REQUIRED_FIELDS)
