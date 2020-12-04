@@ -6,5 +6,5 @@ def calcProductFor(numbers, count, target):
         if sum(seq) == target: return prod(seq)
 
 numbers = [int(n) for n in open('in/01.txt')]
-print('two numbers sum to 2020 gives:', calcProductFor(numbers, 2, 2020))
-print('three numbers sum to 2020 gives:', calcProductFor(numbers, 3, 2020))
+print('part1:', calcProductFor(numbers, 2, 2020))
+print('part2:', calcProductFor(numbers, 3, 2020))

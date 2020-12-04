@@ -24,5 +24,5 @@ def countB(lines):
     return count
 
 lines = [line for line in open('in/02.txt')]
-print('valid PW by letter count:', countA(lines))
-print('valid PW by index:', countB(lines))
+print('part1:', countA(lines))
+print('part2:', countB(lines))

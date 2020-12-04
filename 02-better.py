@@ -17,5 +17,5 @@ def getValidPWCount(lines, isValid: Callable):
     return sum(isValid(*parse(line)) for line in lines)
 
 lines = [line for line in open('in/02.txt')]
-print('valid PW by letter count:', getValidPWCount(lines, isValidLetterCount))
-print('valid PW by index:', getValidPWCount(lines, isValidIndex))
+print('part1:', getValidPWCount(lines, isValidLetterCount))
+print('part2:', getValidPWCount(lines, isValidIndex))

@@ -10,5 +10,5 @@ def calcB(numbers):
                 if a + b + c == 2020: return a * b * c
 
 numbers = [int(n) for n in open('in/01.txt')]
-print('two numbers sum to 2020 gives:', calcA(numbers))
-print('three numbers sum to 2020 gives:', calcB(numbers))
+print('part1:', calcA(numbers))
+print('part2:', calcB(numbers))
