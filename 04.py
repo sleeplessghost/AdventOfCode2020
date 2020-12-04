@@ -1,9 +1,21 @@
 import re
 
+REQUIRED_FIELDS = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
+
+def parsePassport(passportInput):
+    split = passportInput.replace('\n', ' ').strip().split(' ')
+    passport = {}
+    for part in split:
+        pType, pValue = part.split(':')
+        passport[pType] = pValue
+    return passport
+
+def passportHasRequiredFields(passport):
+    return all(field in passport for field in REQUIRED_FIELDS)
+
 def passportIsValid(passport):
-    requiredFields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
-    return (all(field in passport for field in requiredFields) and
-        all(fieldIsValid(field, passport[field]) for field in requiredFields))
+    return (passportHasRequiredFields(passport) and
+        all(fieldIsValid(field, passport[field]) for field in REQUIRED_FIELDS))
 
 def fieldIsValid(name, value):
     if (name == 'byr'): return all(str.isdigit(c) for c in value) and 1920 <= int(value) <= 2002
@@ -19,26 +31,11 @@ def fieldIsValid(name, value):
             (measurement == 'cm' and 150 <= int(height) <= 193) or
             (measurement == 'in' and 59 <= int(height) <= 76))
 
-lines = [line.strip() for line in open('in/04.txt')]
+input = open('in/04.txt').read().split('\n\n')
+passports = [parsePassport(p) for p in input]
 
-passports = []
-p = {}
-for line in lines:
-    if line == '\n' or not line:
-        passports.append(p)
-        p = {}
-    else:
-        parts = line.split(' ')
-        for part in parts:
-            if part:
-                x = part.split(':')
-                t = x[0]
-                v = x[1]
-                p[t] = v
-passports.append(p)
+hasRequired = sum(passportHasRequiredFields(p) for p in passports)
+fullyValid = sum(passportIsValid(p) for p in passports)
 
-valid = 0
-for p in passports:
-    valid += passportIsValid(p)
-
-print(valid)
+print('part1:', hasRequired)
+print('part2:', fullyValid)
