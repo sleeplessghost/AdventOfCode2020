@@ -25,8 +25,8 @@ def fieldIsValid(name, value):
             (units == 'cm' and 150 <= int(height) <= 193) or
             (units == 'in' and 59 <= int(height) <= 76))
 
-input = open('in/04.txt').read().split('\n\n')
-passports = [parsePassport(p) for p in input]
+input = open('in/04.txt').read()
+passports = [parsePassport(p) for p in input.split('\n\n')]
 
 hasRequired = sum(passportHasRequiredFields(p) for p in passports)
 fullyValid = sum(passportIsValid(p) for p in passports)
