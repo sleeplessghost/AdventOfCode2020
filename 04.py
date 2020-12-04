@@ -1,49 +1,32 @@
-def isValid(p):
-    byr = p['byr']
-    iyr = p['iyr']
-    eyr = p['eyr']
-    hgt =p['hgt']
-    hcl = p['hcl']
-    ecl =  p['ecl']
-    pid = p['pid']
-    bval = byr != None and len(byr) == 4 and 1920 <= int(byr) <= 2002
-    ival = iyr != None and len(iyr) == 4 and 2010 <= int(iyr) <= 2020
-    evl = eyr != None and len(eyr) == 4 and 2020 <= int(eyr) <= 2030
-    h0 = hgt[-2:] if hgt != None else None
-    h1 = hgt[0:-2] if hgt != None else None
-    hval = hgt != None and ((h0 == 'cm' and 150 <= int(h1) <= 193) or (h0 == 'in' and 59 <= int(h1) <= 76))
-    hc0 = hcl[1:] if hcl != None else None
-    hcval = hcl != None and (hcl[0] == '#' and len(hc0) == 6 and all(str.isalpha(c) or str.isdigit(c) for c in hc0))
-    ecval = ecl != None and (ecl == 'amb' or ecl == 'blu' or ecl == 'brn' or ecl == 'gry' or ecl == 'grn' or ecl == 'hzl' or ecl == 'oth')
-    pval = pid != None and (len(pid) == 9 and all(str.isdigit(c) for c in pid))
-    return bval and ival and evl and hval and hcval and ecval and pval
+import re
+
+def passportIsValid(passport):
+    requiredFields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
+    return (all(field in passport for field in requiredFields) and
+        all(fieldIsValid(field, passport[field]) for field in requiredFields))
+
+def fieldIsValid(name, value):
+    if (name == 'byr'): return all(str.isdigit(c) for c in value) and 1920 <= int(value) <= 2002
+    elif (name == 'iyr'): return all(str.isdigit(c) for c in value) and 2010 <= int(value) <= 2020
+    elif (name == 'eyr'): return all(str.isdigit(c) for c in value) and 2020 <= int(value) <= 2030
+    elif (name == 'hcl'): return re.match(r'^#[a-zA-Z0-9]{6}$', value) != None
+    elif (name == 'ecl'): return value in ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
+    elif (name == 'pid'): return all(str.isdigit(c) for c in value) and len(value) == 9
+    elif (name == 'hgt'):
+        measurement = value[-2:]
+        height = value[0:-2]
+        return (str.isdigit(c) for c in height) and (
+            (measurement == 'cm' and 150 <= int(height) <= 193) or
+            (measurement == 'in' and 59 <= int(height) <= 76))
 
 lines = [line.strip() for line in open('in/04.txt')]
 
 passports = []
-p = {
-    'byr': None,
-    'iyr': None,
-    'eyr': None,
-    'hgt': None,
-    'hcl': None,
-    'ecl': None,
-    'pid': None,
-    'cid': None,
-}
+p = {}
 for line in lines:
     if line == '\n' or not line:
         passports.append(p)
-        p = {
-            'byr': None,
-            'iyr': None,
-            'eyr': None,
-            'hgt': None,
-            'hcl': None,
-            'ecl': None,
-            'pid': None,
-            'cid': None,
-        }
+        p = {}
     else:
         parts = line.split(' ')
         for part in parts:
@@ -56,6 +39,6 @@ passports.append(p)
 
 valid = 0
 for p in passports:
-    valid += isValid(p)
+    valid += passportIsValid(p)
 
 print(valid)
