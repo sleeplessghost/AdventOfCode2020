@@ -5,11 +5,11 @@ REQUIRED_FIELDS = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
 def parsePassport(passportInput):
     return dict(re.findall(r'(\S+):(\S+)', passportInput))
 
-def passportHasRequiredFields(passport):
+def hasRequiredFields(passport):
     return all(field in passport for field in REQUIRED_FIELDS)
 
-def passportIsValid(passport):
-    return (passportHasRequiredFields(passport) and
+def isValid(passport):
+    return (hasRequiredFields(passport) and
         all(fieldIsValid(field, passport[field]) for field in REQUIRED_FIELDS))
 
 def fieldIsValid(name, value):
@@ -28,8 +28,8 @@ def fieldIsValid(name, value):
 input = open('in/04.txt').read()
 passports = [parsePassport(p) for p in input.split('\n\n')]
 
-hasRequired = sum(passportHasRequiredFields(p) for p in passports)
-fullyValid = sum(passportIsValid(p) for p in passports)
+hasRequired = sum(hasRequiredFields(p) for p in passports)
+fullyValid = sum(isValid(p) for p in passports)
 
 print('part1:', hasRequired)
 print('part2:', fullyValid)

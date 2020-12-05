@@ -3,7 +3,7 @@ def countTrees(dx, dy, map):
     while y < lengthY:
         if map[y][x] == '#': trees += 1
         y += dy
-        x  = (x + dx) % lengthX
+        x = (x + dx) % lengthX
     return trees
 
 map = [line.strip() for line in open('in/03.txt')]
