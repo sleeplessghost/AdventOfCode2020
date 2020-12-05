@@ -6,7 +6,7 @@ seats = [int(lineToBinary(line), 2) for line in lines]
 
 missingSeat = next(
     s for s in range(min(seats), max(seats))
-    if (s not in seats and s-1 in seats and s+1 in seats))
+    if (s not in seats))
 
 print('part1:', max(seats))
 print('part2:', missingSeat)
