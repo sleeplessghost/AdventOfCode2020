@@ -1,16 +1,16 @@
-import functools
+from functools import reduce
 
-def setlines(group):
+def makeSets(group):
     return [set(line) for line in group.splitlines()]
 
-def union(groupsets):
-    return len(functools.reduce(lambda a,b : a.union(b), groupsets))
+def union(sets):
+    return reduce(set.union, sets)
 
-def intersect(groupsets):
-    return len(functools.reduce(lambda a,b: a.intersection(b), groupsets))
+def intersect(sets):
+    return reduce(set.intersection, sets)
 
 input = open('in/06.txt').read()
+groups = [makeSets(group) for group in input.split('\n\n')]
 
-grop = [setlines(group) for group in input.split('\n\n')]
-print('part1:', sum([union(g) for g in grop]))
-print('part2:', sum([intersect(g) for g in grop]))
+print('part1:', sum([len(union(g)) for g in groups]))
+print('part2:', sum([len(intersect(g)) for g in groups]))
