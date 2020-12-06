@@ -1,7 +1,7 @@
 import functools
 
 def setlines(group):
-    return [set(line) for line in group.split('\n') if line]
+    return [set(line) for line in group.splitlines()]
 
 def union(groupsets):
     return len(functools.reduce(lambda a,b : a.union(b), groupsets))
