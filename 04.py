@@ -28,8 +28,5 @@ def fieldIsValid(name, value):
 input = open('in/04.txt').read()
 passports = [parsePassport(p) for p in input.split('\n\n')]
 
-hasRequired = sum(hasRequiredFields(p) for p in passports)
-fullyValid = sum(isValid(p) for p in passports)
-
-print('part1:', hasRequired)
-print('part2:', fullyValid)
+print('part1:', sum(hasRequiredFields(p) for p in passports))
+print('part2:', sum(isValid(p) for p in passports))
