@@ -6,8 +6,8 @@ def parse(line) -> (int, int, str, str):
     a, b, letter, password = parsed.groups()
     return (int(a), int(b), letter, password)
 
-def isValidLetterCount(min, max, letter, password):
-    return min <= password.count(letter) <= max
+def isValidLetterCount(minimum, maximum, letter, password):
+    return minimum <= password.count(letter) <= maximum
 
 def isValidIndex(a, b, letter, password):
     i, j = a - 1, b - 1

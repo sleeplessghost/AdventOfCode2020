@@ -9,8 +9,8 @@ def union(sets):
 def intersect(sets):
     return reduce(set.intersection, sets)
 
-input = open('in/06.txt').read()
-groups = [makeSets(group) for group in input.split('\n\n')]
+text = open('in/06.txt').read()
+groups = [makeSets(group) for group in text.split('\n\n')]
 
 print('part1:', sum([len(union(g)) for g in groups]))
 print('part2:', sum([len(intersect(g)) for g in groups]))

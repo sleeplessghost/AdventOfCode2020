@@ -8,9 +8,9 @@ def parse(line) -> (int, int, str, str):
 def countA(lines):
     count = 0
     for line in lines:
-        (min, max, letter, password) = parse(line)
+        (minimum, maximum, letter, password) = parse(line)
         pwCount = password.count(letter)
-        if (pwCount >= min and pwCount <= max):
+        if (pwCount >= minimum and pwCount <= maximum):
             count += 1
     return count
 
