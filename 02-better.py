@@ -13,9 +13,9 @@ def isValidIndex(a, b, letter, password):
     i, j = a - 1, b - 1
     return (password[i] == letter) != (password[j] == letter)
 
-def getValidPWCount(lines, isValid: Callable):
-    return sum(isValid(*parse(line)) for line in lines)
+def getValidPWCount(passwords, isValid: Callable):
+    return sum(isValid(*p) for p in passwords)
 
-lines = [line for line in open('in/02.txt')]
-print('part1:', getValidPWCount(lines, isValidLetterCount))
-print('part2:', getValidPWCount(lines, isValidIndex))
+passwords = [parse(line) for line in open('in/02.txt')]
+print('part1:', getValidPWCount(passwords, isValidLetterCount))
+print('part2:', getValidPWCount(passwords, isValidIndex))

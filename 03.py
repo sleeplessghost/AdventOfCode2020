@@ -1,8 +1,7 @@
 def countTrees(dx, dy, map):
-    y, x, trees, lengthY, lengthX = 0, 0, 0, len(map), len(map[0])
-    while y < lengthY:
+    x, trees, lengthY, lengthX = 0, 0, len(map), len(map[0])
+    for y in range(0, lengthY, dy):
         if map[y][x] == '#': trees += 1
-        y += dy
         x = (x + dx) % lengthX
     return trees
 
