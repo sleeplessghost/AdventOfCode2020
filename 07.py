@@ -21,19 +21,22 @@ def contains(current, dictionary, results, target):
     
     return results[current]
 
-def countInside(name, dictionary):
-    return sum(
-        amount + (amount * countInside(colour, dictionary))
-        for colour, amount in dictionary[name].items())
+def countInside(name, dictionary, counts):
+    if name not in counts:
+        counts[name] = sum(
+            amount + amount * countInside(colour, dictionary, counts) 
+            for colour, amount in dictionary[name].items())
+    return counts[name]
 
 dictionary = makeDictionary(open('in/07.txt'))
 containsDict = {}
+countsDict = {}
 target = 'shiny gold'
 
 part1 = sum(
     contains(name, dictionary, containsDict, target)
     for name in dictionary.keys() if name != target)
-part2 = countInside(target, dictionary)
+part2 = countInside(target, dictionary, countsDict)
 
 print('part1:', part1)
 print('part2:', part2)
