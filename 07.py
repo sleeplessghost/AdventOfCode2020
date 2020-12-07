@@ -9,20 +9,20 @@ def makeDictionary(lines):
             dictionary[colour][innerColour] = int(amount)
     return dictionary
 
-def contains(name, dictionary, results, target):
-    if name not in results:
-        containsTarget = target in dictionary[name]
-        results[name] = containsTarget or any(
+def contains(colour, dictionary, results, target):
+    if colour not in results:
+        containsTarget = target in dictionary[colour]
+        results[colour] = containsTarget or any(
             contains(innerColour, dictionary, results, target) 
-            for innerColour in dictionary[name])
-    return results[name]
+            for innerColour in dictionary[colour])
+    return results[colour]
 
-def countInside(name, dictionary, counts):
-    if name not in counts:
-        counts[name] = sum(
-            amount + amount * countInside(colour, dictionary, counts) 
-            for colour, amount in dictionary[name].items())
-    return counts[name]
+def countInside(colour, dictionary, counts):
+    if colour not in counts:
+        counts[colour] = sum(
+            amount + amount * countInside(innerColour, dictionary, counts) 
+            for innerColour, amount in dictionary[colour].items())
+    return counts[colour]
 
 dictionary = makeDictionary(open('in/07.txt'))
 containsDict = {}
@@ -30,8 +30,8 @@ countsDict = {}
 target = 'shiny gold'
 
 part1 = sum(
-    contains(name, dictionary, containsDict, target)
-    for name in dictionary if name != target)
+    contains(colour, dictionary, containsDict, target)
+    for colour in dictionary if colour != target)
 part2 = countInside(target, dictionary, countsDict)
 
 print('part1:', part1)
