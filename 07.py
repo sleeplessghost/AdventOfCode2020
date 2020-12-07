@@ -9,17 +9,13 @@ def makeDictionary(lines):
             dictionary[colour][innerColour] = int(amount)
     return dictionary
 
-def contains(current, dictionary, results, target):
-    if current in results: return results[current]
-
-    if target in dictionary[current].keys():
-        results[current] = True
-    else:
-        results[current] = any(
+def contains(name, dictionary, results, target):
+    if name not in results:
+        containsTarget = target in dictionary[name].keys()
+        results[name] = containsTarget or any(
             contains(innerColour, dictionary, results, target) 
-            for innerColour in dictionary[current].keys())
-    
-    return results[current]
+            for innerColour in dictionary[name].keys())
+    return results[name]
 
 def countInside(name, dictionary, counts):
     if name not in counts:
