@@ -11,14 +11,15 @@ def makeDictionary(lines):
 
 def contains(current, dictionary, results, target):
     if current in results: return results[current]
+
     if target in dictionary[current].keys():
         results[current] = True
-        return True
-    inside = any(
-        contains(innerColour, dictionary, results, target) 
-        for innerColour in dictionary[current].keys())
-    results[current] = inside
-    return inside
+    else:
+        results[current] = any(
+            contains(innerColour, dictionary, results, target) 
+            for innerColour in dictionary[current].keys())
+    
+    return results[current]
 
 def countInside(name, dictionary):
     return sum(
@@ -27,11 +28,12 @@ def countInside(name, dictionary):
 
 dictionary = makeDictionary(open('in/07.txt'))
 containsDict = {}
+target = 'shiny gold'
 
 part1 = sum(
-    contains(name, dictionary, containsDict, 'shiny gold')
-    for name in dictionary.keys() if name != 'shiny gold')
-part2 = countInside('shiny gold', dictionary)
+    contains(name, dictionary, containsDict, target)
+    for name in dictionary.keys() if name != target)
+part2 = countInside(target, dictionary)
 
 print('part1:', part1)
 print('part2:', part2)
