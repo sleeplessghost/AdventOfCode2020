@@ -19,15 +19,15 @@ def execute(instructions):
         history.append(pointer)
     return (pointer, accumulator)
 
-def executeAndReplace(originalInstructions, target, replacement):
-    for i, (instr, value) in enumerate(originalInstructions):
+def executeAndReplace(instructions, target, replacement):
+    for i, (instr, value) in enumerate(instructions):
         if instr == target:
-            instructions = originalInstructions.copy()
             instructions[i] = (replacement, value)
             pointer, accumulator = execute(instructions)
+            instructions[i] = (instr, value)
             if isCompleted(pointer, instructions): return accumulator
 
-instructions = list([parseInstruction(line) for line in open('in/08.txt')])
+instructions = [parseInstruction(line) for line in open('in/08.txt')]
 
 __, part1 = execute(instructions)
 jmp = executeAndReplace(instructions, 'nop', 'jmp')
