@@ -26,7 +26,6 @@ def executeAndReplace(originalInstructions, target, replacement):
             instructions[i] = (replacement, value)
             pointer, accumulator = execute(instructions)
             if isCompleted(pointer, instructions): return accumulator
-    return False
 
 instructions = list([parseInstruction(line) for line in open('in/08.txt')])
 
