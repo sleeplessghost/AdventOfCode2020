@@ -6,11 +6,8 @@ def isLooping(previousPointers): return len(previousPointers) != len(set(previou
 def isCompleted(pointer, instructions): return pointer >= len(instructions)
 
 def execute(instructions):
-    accumulator, pointer, previous = 0, 0, []
-    while pointer < len(instructions):
-        previous.append(pointer)
-        if isLooping(previous): break
-
+    accumulator, pointer, history = 0, 0, [0]
+    while not (isCompleted(pointer, instructions) or isLooping(history)):
         instr, value = instructions[pointer]
         if instr == 'jmp':
             pointer += value
@@ -19,6 +16,7 @@ def execute(instructions):
         elif instr == 'acc':
             pointer += 1
             accumulator += value
+        history.append(pointer)
     return (pointer, accumulator)
 
 def executeAndReplace(originalInstructions, target, replacement):
