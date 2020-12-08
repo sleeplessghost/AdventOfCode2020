@@ -1,70 +1,51 @@
-accum = 0
+def parseInstruction(line):
+    instruction, value = line.split()
+    return (instruction, int(value))
 
-instructions = open('in/08.txt').read().splitlines()
-accum = 0
+def isLooping(previousPointers): return len(previousPointers) != len(set(previousPointers))
+def isCompleted(pointer, instructions): return pointer >= len(instructions)
 
-# i = 0
-# prevInstr = []
-# while i < len(instructions):
-#     inst = instructions[i]
-#     parts = inst.split()
-#     do, num = parts[0], int(parts[1])
-#     print(do, num)
-#     if (i in prevInstr): break
-#     prevInstr.append(i)
+def execute(instructions):
+    accumulator, pointer, previous = 0, 0, []
+    while pointer < len(instructions):
+        previous.append(pointer)
+        if isLooping(previous): break
 
-#     if (do == 'jmp'): i += num
-#     else:
-#         if (do == 'acc'): accum += num
-#         #if (do == 'nop'): 
-#         i += 1
+        instr, value = instructions[pointer]
+        if instr == 'jmp':
+            pointer += value
+        elif instr == 'nop':
+            pointer += 1
+        elif instr == 'acc':
+            pointer += 1
+            accumulator += value
+    return (pointer, accumulator)
 
-# print(accum)
+def executeAndReplace(originalInstructions, target, replacement):
+    totalCount = sum(1 for (instruction, value) in originalInstructions if instruction.startswith(target))
+    for i in range(totalCount):
+        instructions = replaceNth(originalInstructions, i, target, replacement)
+        pointer, accumulator = execute(instructions)
+        if isCompleted(pointer, instructions): return accumulator
+    return False
 
-totalNops = sum(1 for x in instructions if x.startswith('nop'))
-totalJmps = sum(1 for x in instructions if x.startswith('jmp'))
+def replaceNth(instructions, n, target, replacement):
+    count, newList = 0, instructions.copy()
+    for i in range(len(newList)):
+        instr, value = newList[i]
+        if instr == target:
+            if count == n:
+                newList[i] = (replacement, value)
+                break
+            else: count += 1
+    return newList
 
-replaced = False
-success = False
-prevInstr = []
-for i in range(totalJmps):
-    print()
-    print('replace', i)
-    copy = list(instructions).copy()
-    replaced = False
-    currCount = 0
-    for j in range(len(copy)):
-        if copy[j].startswith('jmp'):
-            if currCount == i:
-                copy[j] = copy[j].replace('jmp', 'nop')
-                replaced = True
-            currCount += 1
+instructions = list([parseInstruction(line) for line in open('in/08.txt')])
 
-    print(instructions)
-    print(copy)
-    if not replaced: break
+__, part1 = execute(instructions)
+jmp = executeAndReplace(instructions, 'nop', 'jmp')
+nop = executeAndReplace(instructions, 'jmp', 'nop')
 
-    prevInstr = []
-    accum = 0
-    sub = 0
-    while sub < len(copy):
-        inst = copy[sub]
-        parts = inst.split()
-        do, num = parts[0], int(parts[1])
-        print(do, num)
-
-        prevInstr.append(sub)
-        if len(prevInstr) != len(set(prevInstr)): break        
-
-        if (do == 'jmp'): sub += num
-        else:
-            if (do == 'acc'): accum += num
-            #if (do == 'nop'): 
-            sub += 1
-    
-    if len(prevInstr) == len(set(prevInstr)):
-        success = True
-        break
-
-print()
-print(success, accum)
+print('part1:', part1)
+print('part2 (jmp):', jmp)
+print('part2 (nop):', nop)
