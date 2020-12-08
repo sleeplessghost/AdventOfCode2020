@@ -25,8 +25,7 @@ def countInside(colour, dictionary, counts):
     return counts[colour]
 
 dictionary = makeDictionary(open('in/07.txt'))
-containsDict = {}
-countsDict = {}
+containsDict, countsDict = {}, {}
 target = 'shiny gold'
 
 part1 = sum(
