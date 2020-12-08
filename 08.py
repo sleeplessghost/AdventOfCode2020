@@ -22,23 +22,13 @@ def execute(instructions):
     return (pointer, accumulator)
 
 def executeAndReplace(originalInstructions, target, replacement):
-    totalCount = sum(1 for (instruction, value) in originalInstructions if instruction.startswith(target))
-    for i in range(totalCount):
-        instructions = replaceNth(originalInstructions, i, target, replacement)
-        pointer, accumulator = execute(instructions)
-        if isCompleted(pointer, instructions): return accumulator
-    return False
-
-def replaceNth(instructions, n, target, replacement):
-    count, newList = 0, instructions.copy()
-    for i in range(len(newList)):
-        instr, value = newList[i]
+    for i, (instr, value) in enumerate(originalInstructions):
         if instr == target:
-            if count == n:
-                newList[i] = (replacement, value)
-                break
-            else: count += 1
-    return newList
+            instructions = originalInstructions.copy()
+            instructions[i] = (replacement, value)
+            pointer, accumulator = execute(instructions)
+            if isCompleted(pointer, instructions): return accumulator
+    return False
 
 instructions = list([parseInstruction(line) for line in open('in/08.txt')])
 
