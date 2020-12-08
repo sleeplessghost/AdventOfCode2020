@@ -2,12 +2,12 @@ def parseInstruction(line):
     instruction, value = line.split()
     return (instruction, int(value))
 
-def isLooping(previousPointers): return len(previousPointers) != len(set(previousPointers))
+def isLooping(pointerHistory): return len(pointerHistory) != len(set(pointerHistory))
 def isCompleted(pointer, instructions): return pointer >= len(instructions)
 
 def execute(instructions):
     accumulator, pointer, history = 0, 0, [0]
-    while not (isCompleted(pointer, instructions) or isLooping(history)):
+    while not (isLooping(history) or isCompleted(pointer, instructions)):
         instr, value = instructions[pointer]
         if instr == 'jmp':
             pointer += value
