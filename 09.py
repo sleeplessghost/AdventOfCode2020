@@ -3,15 +3,13 @@ from itertools import combinations
 def findInvalid(numbers, pSize):
     preamble = []
     for n in numbers:
-        if len(preamble) < pSize:
-            preamble.append(n)
+        if len(preamble) < pSize: preamble.append(n)
         else:
             combs = combinations(preamble, 2)
-            if not any(sum(seq) == n for seq in combs):
-                return n
-            else:
-                preamble = preamble[1:]
+            if any(sum(seq) == n for seq in combs):
+                preamble.pop(0)
                 preamble.append(n)
+            else: return n
 
 def findRange(numbers, target):
     for i in range(len(numbers)):
@@ -22,8 +20,8 @@ def findRange(numbers, target):
 
 numbers = [int(n) for n in open('in/09.txt')]
 
-part1 = findInvalid(numbers, 25)
-containing = findRange(numbers, part1)
+invalid = findInvalid(numbers, 25)
+containing = findRange(numbers, invalid)
 
-print('part1:', part1)
+print('part1:', invalid)
 print('part2:', min(containing) + max(containing))
