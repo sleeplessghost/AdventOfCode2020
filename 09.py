@@ -19,7 +19,7 @@ def findRange(numbers, target):
 numbers = [int(n) for n in open('in/09.txt')]
 
 invalid = findInvalid(numbers, 25)
-containing = findRange(numbers, invalid)
+contain = findRange(numbers, invalid)
 
 print('part1:', invalid)
-print('part2:', min(containing) + max(containing))
+print('part2:', min(contain) + max(contain))
