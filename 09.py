@@ -10,16 +10,17 @@ def findInvalid(numbers, pSize):
         else: return n
 
 def findRange(numbers, target):
-    for i in range(len(numbers)):
-        for j in range(i+1, len(numbers)):
-            total = sum(numbers[i : j+1])
+    for i, valueA in enumerate(numbers):
+        total = valueA
+        for j, valueB in enumerate(numbers[i+1:], i+1):
+            total += valueB
             if total > target: break
             if total == target: return numbers[i : j+1]
 
 numbers = [int(n) for n in open('in/09.txt')]
 
 invalid = findInvalid(numbers, 25)
-containing = findRange(numbers, invalid)
+contain = findRange(numbers, invalid)
 
 print('part1:', invalid)
-print('part2:', min(containing) + max(containing))
+print('part2:', min(contain) + max(contain))
