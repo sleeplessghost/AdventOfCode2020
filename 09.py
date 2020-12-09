@@ -1,15 +1,13 @@
 from itertools import combinations
 
 def findInvalid(numbers, pSize):
-    preamble = []
-    for n in numbers:
-        if len(preamble) < pSize: preamble.append(n)
-        else:
-            combs = combinations(preamble, 2)
-            if any(sum(seq) == n for seq in combs):
-                preamble.pop(0)
-                preamble.append(n)
-            else: return n
+    preamble = numbers[:pSize]
+    for n in numbers[pSize:]:
+        combs = combinations(preamble, 2)
+        if any(sum(seq) == n for seq in combs):
+            preamble.pop(0)
+            preamble.append(n)
+        else: return n
 
 def findRange(numbers, target):
     for i in range(len(numbers)):
