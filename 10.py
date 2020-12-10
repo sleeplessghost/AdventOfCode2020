@@ -4,13 +4,11 @@ adapters = sorted(set([int(n) for n in open('in/10.txt')]))
 adapters.insert(0,0)
 adapters.append(max(adapters) + 3)
 
-ones = 0
-threes = 0
+diffCounts = defaultdict(int)
 for i in range(len(adapters) - 1):
     diff = adapters[i+1] - adapters[i]
-    if diff == 1: ones += 1
-    elif diff == 3: threes += 1
-print('part1:', ones * threes)
+    diffCounts[diff] += 1
+print('part1:', diffCounts[1] * diffCounts[3])
 
 #paths to N = sum of paths to all adapters that can connect to N
 #adapter can connect to N if it is 1/2/3 jolts lower rated
