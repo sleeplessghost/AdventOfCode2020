@@ -1,53 +1,41 @@
 from copy import deepcopy
 
-def checkOccupied(row, column, drow, dcol, seats):
-    maxX = len(seats[0])
-    maxY = len(seats)
-    r = row + drow
-    c = column + dcol
-    if c < 0 or c >= maxX: return False
-    if r < 0 or r >= maxY: return False
+def checkOccupied(row, column, direction, seats, adjacentOnly):
+    rowChange, columnChange = direction
+    r, c = row + rowChange, column + columnChange
+    if not (0 <= r < len(seats) and 0 <= c < len(seats[0])): return False
     if seats[r][c] == '#': return True
-    if seats[r][c] == 'L': return False
-    return checkOccupied(r, c, drow, dcol, seats)
+    if seats[r][c] == 'L' or adjacentOnly: return False
+    return checkOccupied(r, c, direction, seats, adjacentOnly)
 
-def step(seats):
+def getCountAt(row, column, seats, adjacentOnly):
+    directions = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
+    return sum(checkOccupied(row, column, direction, seats, adjacentOnly) for direction in directions)
+
+def step(seats, adjacentOnly):
     result = deepcopy(seats)
     for row in range(len(seats)):
         for column in range(len(seats[0])):
-            left = checkOccupied(row, column, 0, -1, seats)
-            right = checkOccupied(row, column, 0, 1, seats)
-            up = checkOccupied(row, column, -1, 0, seats)
-            down = checkOccupied(row, column, 1, 0, seats)
-            UL = checkOccupied(row, column, -1, -1, seats)
-            UR = checkOccupied(row, column, -1, 1, seats)
-            DL = checkOccupied(row, column, 1, -1, seats)
-            DR = checkOccupied(row, column, 1, 1, seats)
-            count = sum([left, right, up, down, UL, UR, DL, DR])
-
+            maxCount = 4 if adjacentOnly else 5
+            count = getCountAt(row, column, seats, adjacentOnly)
             if seats[row][column] == 'L' and count == 0: result[row][column] = '#'
-            if seats[row][column] == '#' and count >= 5: result[row][column] = 'L'
+            if seats[row][column] == '#' and count >= maxCount: result[row][column] = 'L'
     return result
 
+def stepToEnd(seats, adjacentOnly):
+    old, new = seats, step(seats, adjacentOnly)
+    while not isSame(old, new):
+        old = new
+        new = step(new, adjacentOnly)
+    return new
+
 def isSame(a, b):
-    for row in range(len(a)):
-        for col in range(len(a[0])):
-            if a[row][col] != b[row][col]: return False
-    return True
+    return all(a[row] == b[row] for row in range(len(a)))
 
 seats = [list(line.strip()) for line in open('in/11.txt')]
 
-old = seats
-new = step(seats)
-while not isSame(old, new):
-    old = new
-    new = step(new)
+part1 = stepToEnd(seats, True)
+part2 = stepToEnd(seats, False)
 
-count = 0
-for row in range(len(new)):
-        for col in range(len(new[0])):
-            if new[row][col] == '#': count += 1
-
-print(count)
-# for row in seats:
-#     print(''.join(row))
+print('part1:', sum(row.count('#') for row in part1))
+print('part2:', sum(row.count('#') for row in part2))
