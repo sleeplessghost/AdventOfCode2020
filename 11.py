@@ -1,28 +1,32 @@
 from copy import deepcopy
 
-def checkOccupied(row, column, seats):
+def checkOccupied(row, column, drow, dcol, seats):
     maxX = len(seats[0])
     maxY = len(seats)
-    if column < 0 or column >= maxX: return False
-    if row < 0 or row >= maxY: return False
-    return seats[row][column] == '#'
+    r = row + drow
+    c = column + dcol
+    if c < 0 or c >= maxX: return False
+    if r < 0 or r >= maxY: return False
+    if seats[r][c] == '#': return True
+    if seats[r][c] == 'L': return False
+    return checkOccupied(r, c, drow, dcol, seats)
 
 def step(seats):
     result = deepcopy(seats)
     for row in range(len(seats)):
         for column in range(len(seats[0])):
-            left = checkOccupied(row, column - 1, seats)
-            right = checkOccupied(row, column + 1, seats)
-            up = checkOccupied(row - 1, column, seats)
-            down = checkOccupied(row + 1, column, seats)
-            UL = checkOccupied(row - 1, column - 1, seats)
-            UR = checkOccupied(row - 1, column + 1, seats)
-            DL = checkOccupied(row + 1, column - 1, seats)
-            DR = checkOccupied(row + 1, column + 1, seats)
+            left = checkOccupied(row, column, 0, -1, seats)
+            right = checkOccupied(row, column, 0, 1, seats)
+            up = checkOccupied(row, column, -1, 0, seats)
+            down = checkOccupied(row, column, 1, 0, seats)
+            UL = checkOccupied(row, column, -1, -1, seats)
+            UR = checkOccupied(row, column, -1, 1, seats)
+            DL = checkOccupied(row, column, 1, -1, seats)
+            DR = checkOccupied(row, column, 1, 1, seats)
             count = sum([left, right, up, down, UL, UR, DL, DR])
 
             if seats[row][column] == 'L' and count == 0: result[row][column] = '#'
-            if seats[row][column] == '#' and count >= 4: result[row][column] = 'L'
+            if seats[row][column] == '#' and count >= 5: result[row][column] = 'L'
     return result
 
 def isSame(a, b):
