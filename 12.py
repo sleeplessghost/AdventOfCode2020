@@ -19,7 +19,6 @@ print('part1:', abs(x) + abs(y))
 
 x, y = (10,1)
 sx, sy = (0,0)
-currentDir = 90
 for direction, distance in values:
     if direction == 'L' or direction == 'R':
         directed = distance if direction == 'R' else -distance
