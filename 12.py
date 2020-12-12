@@ -9,11 +9,11 @@ x, y = (0,0)
 currentDir = 90
 for direction, distance in values:
     if direction == 'L': currentDir = (currentDir - distance) % 360
-    if direction == 'R': currentDir = (currentDir + distance) % 360
-    if direction == 'N' or (direction == 'F' and currentDir == 0): y += distance
-    if direction == 'S' or (direction == 'F' and currentDir == 180): y -= distance
-    if direction == 'E' or (direction == 'F' and currentDir == 90): x += distance
-    if direction == 'W' or (direction == 'F' and currentDir == 270): x -= distance
+    elif direction == 'R': currentDir = (currentDir + distance) % 360
+    elif direction == 'N' or (direction == 'F' and currentDir == 0): y += distance
+    elif direction == 'S' or (direction == 'F' and currentDir == 180): y -= distance
+    elif direction == 'E' or (direction == 'F' and currentDir == 90): x += distance
+    elif direction == 'W' or (direction == 'F' and currentDir == 270): x -= distance
 
 print('part1:', abs(x) + abs(y))
 
@@ -24,13 +24,13 @@ for direction, distance in values:
         directed = distance if direction == 'R' else -distance
         absolute = directed % 360
         if absolute == 90: x,y = y,-x
-        if absolute == 180: x,y = -x,-y
-        if absolute == 270: x,y = -y,x
-    if direction == 'N': y += distance
-    if direction == 'S': y -= distance
-    if direction == 'E': x += distance
-    if direction == 'W': x -= distance
-    if direction == 'F':
+        elif absolute == 180: x,y = -x,-y
+        elif absolute == 270: x,y = -y,x
+    elif direction == 'N': y += distance
+    elif direction == 'S': y -= distance
+    elif direction == 'E': x += distance
+    elif direction == 'W': x -= distance
+    elif direction == 'F':
         sx += distance * x
         sy += distance * y
 
