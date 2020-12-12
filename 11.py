@@ -14,23 +14,23 @@ def getCountAt(row, column, seats, adjacentOnly):
 
 def step(seats, adjacentOnly):
     result = deepcopy(seats)
+    hasChanged = False
     for row in range(len(seats)):
         for column in range(len(seats[0])):
             maxCount = 4 if adjacentOnly else 5
             count = getCountAt(row, column, seats, adjacentOnly)
-            if seats[row][column] == 'L' and count == 0: result[row][column] = '#'
-            if seats[row][column] == '#' and count >= maxCount: result[row][column] = 'L'
-    return result
+            switchEmpty = seats[row][column] == 'L' and count == 0
+            switchOccupied = seats[row][column] == '#' and count >= maxCount
+            if switchEmpty: result[row][column] = '#'
+            if switchOccupied: result[row][column] = 'L'
+            if (switchEmpty or switchOccupied): hasChanged = True
+    return hasChanged, result
 
 def stepToEnd(seats, adjacentOnly):
-    old, new = seats, step(seats, adjacentOnly)
-    while not isSame(old, new):
-        old = new
-        new = step(new, adjacentOnly)
+    hasChanged, new = step(seats, adjacentOnly)
+    while hasChanged:
+        hasChanged, new = step(new, adjacentOnly)
     return new
-
-def isSame(a, b):
-    return all(a[row] == b[row] for row in range(len(a)))
 
 seats = [list(line.strip()) for line in open('in/11.txt')]
 
