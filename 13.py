@@ -1,3 +1,5 @@
+from sympy.ntheory.modular import crt
+
 lines = [line.strip() for line in open('in/13.txt')]
 timestamp = int(lines[0])
 buses = [(i, int(t)) for i,t in enumerate(lines[1].split(',')) if t != 'x']
@@ -12,3 +14,7 @@ for i,time in buses:
         result += product
     product *= time
 print('part2:', result)
+
+mods = [time for i,time in buses]
+remainders = [-i for i,time in buses]
+print('part2:',crt(mods, remainders)[0])
