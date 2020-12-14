@@ -1,6 +1,10 @@
 import re
 
-def getPermutations(binary):
+def maskValue(value: str, mask: str):
+    value = int(value) | int(mask.replace('X', '0'), 2)
+    return value & int(mask.replace('X', '1'), 2)
+
+def getPermutations(binary: str):
     if 'X' not in binary:
         yield int(binary, 2)
     else:
@@ -9,24 +13,18 @@ def getPermutations(binary):
 
 lines = [line.strip() for line in open('in/14.txt')]
 
-mask = ''
+mask = None
 mem = {}
 for line in lines:
     if line.startswith('mask'):
         mask = line.split(' = ')[1]
     elif line.startswith('mem'):
         address, value = re.match(r'mem\[(\d+)\] = (\d+)', line).groups()
-        binary = str(bin(int(value))).replace('0b','')
-        lengthDiff = len(mask) - len(binary)
-        binary = list(lengthDiff * '0' + binary)
-        for i, c in enumerate(mask):
-            if c != 'X':
-                binary[i] = c
-        mem[address] = int(''.join(binary), 2)
+        mem[address] = maskValue(value, mask)
 
 print('part1:', sum(mem.values()))
 
-mask = ''
+mask = None
 mem = {}
 for line in lines:
     if line.startswith('mask'):
