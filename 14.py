@@ -1,23 +1,22 @@
 import re
-from collections import defaultdict
 
-def getAllValsFor(i, masked, arr):
+def getAllValsFor(i, masked):
     if i >= len(masked):
-        arr.append(''.join(masked))
+        yield ''.join(masked)
     elif masked[i] == 'X':
         zero = masked.copy()
         zero[i] = '0'
-        getAllValsFor(i + 1, zero, arr)
         one = masked.copy()
         one[i] = '1'
-        getAllValsFor(i + 1, one, arr)
+        for s in getAllValsFor(i + 1, zero): yield s
+        for s in getAllValsFor(i + 1, one): yield s
     else:
-        getAllValsFor(i + 1, masked, arr)
+        for s in getAllValsFor(i + 1, masked): yield s
 
 lines = [line.strip() for line in open('in/14.txt')]
 
 mask = ''
-mem = defaultdict(int)
+mem = {}
 for line in lines:
     if line.startswith('mask'):
         mask = line.split(' = ')[1]
@@ -34,7 +33,7 @@ for line in lines:
 print('part1:', sum(mem.values()))
 
 mask = ''
-mem = defaultdict(int)
+mem = {}
 for line in lines:
     if line.startswith('mask'):
         mask = line.split(' = ')[1]
@@ -46,9 +45,7 @@ for line in lines:
         for i, c in enumerate(mask):
             if c == 'X' or c == '1':
                 binary[i] = c
-        perms = []
-        getAllValsFor(0, binary, perms)
-        for addr in perms:
+        for addr in getAllValsFor(0, binary):
             converted = int(addr, 2)
             mem[addr] = int(value)
 
