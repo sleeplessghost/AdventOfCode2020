@@ -1,17 +1,11 @@
 import re
 
-def getAllValsFor(i, masked):
-    if i >= len(masked):
-        yield ''.join(masked)
-    elif masked[i] == 'X':
-        zero = masked.copy()
-        zero[i] = '0'
-        one = masked.copy()
-        one[i] = '1'
-        for s in getAllValsFor(i + 1, zero): yield s
-        for s in getAllValsFor(i + 1, one): yield s
+def getPermutations(binary):
+    if 'X' not in binary:
+        yield int(binary, 2)
     else:
-        for s in getAllValsFor(i + 1, masked): yield s
+        yield from getPermutations(binary.replace('X', '1', 1))
+        yield from getPermutations(binary.replace('X', '0', 1))
 
 lines = [line.strip() for line in open('in/14.txt')]
 
@@ -45,8 +39,8 @@ for line in lines:
         for i, c in enumerate(mask):
             if c == 'X' or c == '1':
                 binary[i] = c
-        for addr in getAllValsFor(0, binary):
-            converted = int(addr, 2)
+        binary = ''.join(binary)
+        for addr in getPermutations(binary):
             mem[addr] = int(value)
 
 print('part2:', sum(mem.values()))
