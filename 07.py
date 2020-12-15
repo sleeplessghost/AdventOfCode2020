@@ -5,7 +5,7 @@ def makeDictionary(lines):
     for line in lines:
         colour = re.search(r'(.+) bags contain', line)[1]
         dictionary[colour] = {}
-        for amount, innerColour in re.findall(r'(\d) (\w+ \w+)', line):
+        for amount, innerColour in re.findall(r'(\d+) (\w+ \w+)', line):
             dictionary[colour][innerColour] = int(amount)
     return dictionary
 
