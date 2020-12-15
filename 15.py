@@ -1,17 +1,13 @@
 def runToNumber(numbers, target):
-    mapped = {number: [index] for index, number in enumerate(numbers)}
-    lastNumber, count = numbers[-1], len(numbers)
-    while count < target:
-        prev = mapped[lastNumber]
-        if len(prev) < 2:
-            lastNumber = 0
-        else:
-            secondMost, recent = prev[-2:]
-            lastNumber = recent - secondMost
-        if lastNumber not in mapped:
-            mapped[lastNumber] = []
-        mapped[lastNumber].append(count)
-        count += 1
+    mapped = {number: index for index, number in enumerate(numbers)}
+    lastNumber = numbers[-1]
+    for index in range(len(numbers), target):
+        nextNumber, prevIndex = 0, index - 1
+        if lastNumber in mapped:
+            previous = mapped[lastNumber]
+            nextNumber = prevIndex - previous
+        mapped[lastNumber] = prevIndex
+        lastNumber = nextNumber
     return lastNumber
 
 numbers = [int(n) for n in open('in/15.txt').read().split(',')]
