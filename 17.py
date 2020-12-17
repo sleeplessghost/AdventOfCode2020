@@ -2,22 +2,13 @@ from copy import deepcopy
 from itertools import product
 from collections import defaultdict
 
-def activeNeighbours(cube, x, y, z):
+def activeNeighbours(cube, coords):
     count = 0
-    possibles = [[x-1,x,x+1], [y-1,y,y+1], [z-1,z,z+1]]
+    possibles = [[c-1,c,c+1] for c in coords]
     combinations = product(*possibles)
-    for cx, cy, cz in combinations:
-        if not (cx == x and cy == y and cz == z):
-            count += cube[(cx,cy,cz)]
-    return count
-
-def activeNeighbours2(cube, x, y, z, w):
-    count = 0
-    possibles = [[x-1,x,x+1], [y-1,y,y+1], [z-1,z,z+1], [w-1,w,w+1]]
-    combinations = product(*possibles)
-    for cx, cy, cz, cw in combinations:
-        if not (cx == x and cy == y and cz == z and cw == w):
-            count += cube[(cx,cy,cz,cw)]
+    for coordinates in combinations:
+        if coordinates != coords:
+            count += cube[coordinates]
     return count
 
 def step(oldCube, scaleMin, scaleMax):
@@ -25,7 +16,7 @@ def step(oldCube, scaleMin, scaleMax):
     for x in range(scaleMin, scaleMax):
         for y in range(scaleMin, scaleMax):
             for z in range(scaleMin, scaleMax):
-                neighbours = activeNeighbours(oldCube, x, y, z)
+                neighbours = activeNeighbours(oldCube, (x, y, z))
                 if oldCube[(x,y,z)]: cube[(x,y,z)] = 2 <= neighbours <= 3
                 else: cube[(x,y,z)] = neighbours == 3
     return cube
@@ -36,7 +27,7 @@ def step2(oldCube, scaleMin, scaleMax):
         for y in range(scaleMin, scaleMax):
             for z in range(scaleMin, scaleMax):
                 for w in range(scaleMin, scaleMax):
-                    neighbours = activeNeighbours2(oldCube, x, y, z, w)
+                    neighbours = activeNeighbours(oldCube, (x, y, z, w))
                     if oldCube[(x,y,z,w)]: cube[(x,y,z,w)] = 2 <= neighbours <= 3
                     else: cube[(x,y,z,w)] = neighbours == 3
     return cube
