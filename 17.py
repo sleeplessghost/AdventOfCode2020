@@ -11,14 +11,17 @@ def activeNeighbours(cube, coords):
             count += cube[coordinates]
     return count
 
+def stepAtCoordinate(cube, oldCube, coords):
+    neighbours = activeNeighbours(oldCube, coords)
+    if oldCube[coords]: cube[coords] = 2 <= neighbours <= 3
+    else: cube[coords] = neighbours == 3
+
 def step(oldCube, scaleMin, scaleMax):
     cube = deepcopy(oldCube)
     for x in range(scaleMin, scaleMax):
         for y in range(scaleMin, scaleMax):
             for z in range(scaleMin, scaleMax):
-                neighbours = activeNeighbours(oldCube, (x, y, z))
-                if oldCube[(x,y,z)]: cube[(x,y,z)] = 2 <= neighbours <= 3
-                else: cube[(x,y,z)] = neighbours == 3
+                stepAtCoordinate(cube, oldCube, (x,y,z))
     return cube
 
 def step2(oldCube, scaleMin, scaleMax):
@@ -27,9 +30,7 @@ def step2(oldCube, scaleMin, scaleMax):
         for y in range(scaleMin, scaleMax):
             for z in range(scaleMin, scaleMax):
                 for w in range(scaleMin, scaleMax):
-                    neighbours = activeNeighbours(oldCube, (x, y, z, w))
-                    if oldCube[(x,y,z,w)]: cube[(x,y,z,w)] = 2 <= neighbours <= 3
-                    else: cube[(x,y,z,w)] = neighbours == 3
+                    stepAtCoordinate(cube, oldCube, (x,y,z,w))
     return cube
 
 inp = [list(line.strip()) for line in open('in/17.txt')]
