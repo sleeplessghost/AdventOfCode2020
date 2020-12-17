@@ -34,25 +34,19 @@ def step2(oldCube, scaleMin, scaleMax):
     return cube
 
 inp = [list(line.strip()) for line in open('in/17.txt')]
-size = len(inp)
-cube = defaultdict(bool)
 
+cube = defaultdict(bool)
 for y, line in enumerate(inp):
     for x, char in enumerate(line):
         cube[(x,y,0)] = True if char == '#' else False
 
-for i in range(6):
-    cube = step(cube, 0 - i - 1, size + i + 1)
-
+for i in range(6): cube = step(cube, 0 - i - 1, len(inp) + i + 1)
 print('part1:', sum(cube.values()))
 
 cube = defaultdict(bool)
-
 for y, line in enumerate(inp):
     for x, char in enumerate(line):
         cube[(x,y,0,0)] = True if char == '#' else False
 
-for i in range(6):
-    cube = step2(cube, 0 - i - 1, size + i + 1)
-
+for i in range(6): cube = step2(cube, 0 - i - 1, len(inp) + i + 1)
 print('part2:', sum(cube.values()))
