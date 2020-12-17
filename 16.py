@@ -28,7 +28,7 @@ nearbyTickets = parseNearbyTickets(nearbyTickets)
 yourTicket = parseYourTicket(yourTicket)
 
 invalids = [countInvalid(ticket, fieldRules) for ticket in nearbyTickets]
-print('part1:', sum(v for v in invalids if v is not None))
+print('part1:', sum(v for v in invalids if v))
 
 allFields = [field for field, boundsA, boundsB in fieldRules]
 validPossibilities = {i:allFields.copy() for i,value in enumerate(nearbyTickets[0])}
