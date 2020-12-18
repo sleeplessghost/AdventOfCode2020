@@ -1,12 +1,9 @@
 import re
 
 class op(int):
-    def __mul__(self, other):
-        return op(int(self) + other)
-    def __add__(self, other):
-        return op(int(self) + other)
-    def __sub__(self, other):
-        return op(int(self) * other)
+    def __mul__(self, other): return op(int(self) + other)
+    def __add__(self, other): return op(int(self) + other)
+    def __sub__(self, other): return op(int(self) * other)
 
 def evaluate(expr, additionFirst):
     expr = re.sub(r'(\d+)', r'op(\1)', expr)
