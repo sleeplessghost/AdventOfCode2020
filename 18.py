@@ -10,19 +10,19 @@ def ltr(expr):
     return result
 
 def additions(expr):
-    match = re.search(r'(\d+ \+ \d+)', expr)
-    while match:
-        m = match.group()
-        expr = expr.replace(m, str(ltr(m)), 1)
-        match = re.search(r'(\d+ \+ \d+)', expr)
+    additionMatch = re.search(r'(\d+ \+ \d+)', expr)
+    while additionMatch:
+        add = additionMatch.group()
+        expr = expr.replace(add, str(ltr(add)), 1)
+        additionMatch = re.search(r'(\d+ \+ \d+)', expr)
     return ltr(expr)
 
 def evaluate(expr, additionFirst):
     while '(' in expr:
-        matches = re.findall(r'(\([0-9\+\*\s]+\))', expr)
-        for match in matches:
-            if additionFirst: expr = expr.replace(match, str(additions(match[1:-1])))
-            else: expr = expr.replace(match, str(ltr(match[1:-1])))
+        bracketMatches = re.findall(r'(\([0-9\+\*\s]+\))', expr)
+        for brackets in bracketMatches:
+            if additionFirst: expr = expr.replace(brackets, str(additions(brackets[1:-1])))
+            else: expr = expr.replace(brackets, str(ltr(brackets[1:-1])))
     return additions(expr) if additionFirst else ltr(expr)
 
 lines = [line.strip() for line in open('in/18.txt')]
