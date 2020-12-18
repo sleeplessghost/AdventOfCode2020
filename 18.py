@@ -1,3 +1,5 @@
+import re
+
 def op(total, value, operator):
     if operator == '+': return total + value
     elif operator == '-': return total - value
@@ -18,16 +20,24 @@ def evaluate(expr):
         sub = sub[:end]
         end += start
         brack = evaluate(sub)
-        expr = expr[0:start-1] + str(brack) + expr[end+1:]
+        expr = expr[:start-1] + str(brack) + expr[end+1:]
     result = None
     operator = '+'
+    while '+' in expr:
+        matches = re.findall(r'(\d+ \+ \d+)', expr)
+        if matches is None: break
+        match = matches[0]
+        split = match.split(' + ')
+        evald = int(split[0]) + int(split[1])
+        start = expr.find(match)
+        expr = expr[:start] + str(evald) + expr[start + len(match):]
     for token in expr.split(' '):
-        if token in ['+','-','*']: operator = token
-        elif result is None: result = int(token)
-        else: result = op(result, int(token), operator)
+            if token in ['+','-','*']: operator = token
+            elif result is None: result = int(token)
+            else: result = op(result, int(token), operator)
     return result
 
 lines = [line.strip() for line in open('in/18.txt')]
 
 result = sum(evaluate(line) for line in lines)
-print('part1:', result)
+print('part2:', result)
