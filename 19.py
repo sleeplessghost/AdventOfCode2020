@@ -36,25 +36,11 @@ count = 0
 length = len(r42[0])
 valids = []
 for m in messages:
-    orig = m
-    while len(m) > 0:
-        sub = m[:length]
-        m = m[length:]
-        if sub not in r42: break
-        chunks = [m[i:i+length] for i in range(0, len(m), length)]
-        left,right = 0,0
-        for c in chunks:
-            if c in r42:
-                if right > 0:
-                    left = -1
-                    break
-                else: left += 1
-            elif c in r31:
-                right += 1
-            else:
-                left = -1
-                break
-        if left == right and len(m) > 0: 
-            valids.append(orig)
-            break
+    chunks = [m[i:i+length] for i in range(0, len(m), length)]
+    if all(c in r42 or c in r31 for c in chunks):
+        left = sum(c in r42 for c in chunks)
+        right = sum(c in r31 for c in chunks)
+        if left > right and right > 0:
+            firstRight, test = next((i,c) for i,c in enumerate(chunks) if c in r31)
+            if all(c not in r42 for c in chunks[firstRight + 1:]): valids.append(m)
 print('part2:', len(valids))
