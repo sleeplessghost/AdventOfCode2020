@@ -29,9 +29,32 @@ messages = messages.split('\n')
 valid = [m for m in messages if m in patterns]
 print('part1:', len(valid))
 
-# rules[8] = '42 | 42 8'
-# rules[11] = '42 31 | 42 11 31'
+r42 = [p for p in pattern(rules, 42)]
+r31 = [p for p in pattern(rules, 31)]
 
-# patterns = [p for p in pattern(rules, 0)]
-# valid = [m for m in messages if m in patterns]
-# print('part2:', len(valid))
+count = 0
+length = len(r42[0])
+valids = []
+for m in messages:
+    orig = m
+    while len(m) > 0:
+        sub = m[:length]
+        m = m[length:]
+        if sub not in r42: break
+        chunks = [m[i:i+length] for i in range(0, len(m), length)]
+        left,right = 0,0
+        for c in chunks:
+            if c in r42:
+                if right > 0:
+                    left = -1
+                    break
+                else: left += 1
+            elif c in r31:
+                right += 1
+            else:
+                left = -1
+                break
+        if left == right and len(m) > 0: 
+            valids.append(orig)
+            break
+print('part2:', len(valids))
