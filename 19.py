@@ -3,10 +3,10 @@ from itertools import product
 def parseRules(rules):
     result = {}
     for rule in rules.split('\n'):
-        number, value = rule.split(': ')
+        index, value = rule.split(': ')
         if '"' in value:
             value = value.replace('"','').strip()
-        result[int(number)] = value
+        result[int(index)] = value
     return result
 
 def pattern(rules, index):
@@ -21,26 +21,24 @@ def pattern(rules, index):
             for combination in prod:
                 yield ''.join(combination)
 
+def messageIsValid(message, ruleLeft, ruleRight):
+    length = len(ruleLeft[0])
+    chunks = [message[i:i+length] for i in range(0, len(message), length)]
+    if all(c in ruleLeft or c in ruleRight for c in chunks):
+        left = sum(c in ruleLeft for c in chunks)
+        right = sum(c in ruleRight for c in chunks)
+        if left > right and right > 0:
+            firstRight = next(i for i,c in enumerate(chunks) if c in ruleRight)
+            return all(c not in ruleLeft for c in chunks[firstRight + 1:])
+    return False
+
 rules, messages = open('in/19.txt').read().split('\n\n')
 rules = parseRules(rules)
-patterns = [p for p in pattern(rules, 0)]
-
 messages = messages.split('\n')
-valid = [m for m in messages if m in patterns]
-print('part1:', len(valid))
 
-r42 = [p for p in pattern(rules, 42)]
-r31 = [p for p in pattern(rules, 31)]
+rule0 = [p for p in pattern(rules, 0)]
+print('part1:', len([m for m in messages if m in rule0]))
 
-count = 0
-length = len(r42[0])
-valids = []
-for m in messages:
-    chunks = [m[i:i+length] for i in range(0, len(m), length)]
-    if all(c in r42 or c in r31 for c in chunks):
-        left = sum(c in r42 for c in chunks)
-        right = sum(c in r31 for c in chunks)
-        if left > right and right > 0:
-            firstRight, test = next((i,c) for i,c in enumerate(chunks) if c in r31)
-            if all(c not in r42 for c in chunks[firstRight + 1:]): valids.append(m)
-print('part2:', len(valids))
+rule42 = [p for p in pattern(rules, 42)]
+rule31 = [p for p in pattern(rules, 31)]
+print('part2:', sum(messageIsValid(m, rule42, rule31) for m in messages))
