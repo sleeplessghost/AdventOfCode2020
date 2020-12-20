@@ -22,7 +22,7 @@ def pattern(rules, index):
                 yield ''.join(combination)
 
 def messageIsValid(message, ruleLeft, ruleRight):
-    length = len(ruleLeft[0])
+    length = len(list(ruleLeft)[0])
     chunks = [message[i:i+length] for i in range(0, len(message), length)]
     if all(c in ruleLeft or c in ruleRight for c in chunks):
         left = sum(c in ruleLeft for c in chunks)
@@ -39,6 +39,6 @@ messages = messages.split('\n')
 rule0 = set([*pattern(rules, 0)])
 print('part1:', len([m for m in messages if m in rule0]))
 
-rule42 = [*pattern(rules, 42)]
-rule31 = [*pattern(rules, 31)]
+rule42 = set([*pattern(rules, 42)])
+rule31 = set([*pattern(rules, 31)])
 print('part2:', sum(messageIsValid(m, rule42, rule31) for m in messages))
