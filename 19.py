@@ -36,9 +36,9 @@ rules, messages = open('in/19.txt').read().split('\n\n')
 rules = parseRules(rules)
 messages = messages.split('\n')
 
-rule0 = set([p for p in pattern(rules, 0)])
+rule0 = set([*pattern(rules, 0)])
 print('part1:', len([m for m in messages if m in rule0]))
 
-rule42 = [p for p in pattern(rules, 42)]
-rule31 = [p for p in pattern(rules, 31)]
+rule42 = [*pattern(rules, 42)]
+rule31 = [*pattern(rules, 31)]
 print('part2:', sum(messageIsValid(m, rule42, rule31) for m in messages))
