@@ -2,7 +2,7 @@ def parseDeck(deck):
     return [int(n.strip()) for n in deck.splitlines()[1:]]
 
 def anyPreviousState(deck, states):
-    return any(len(deck) == len(state) and all(deck[i] == n for i,n in enumerate(state)) for state in states)
+    return tuple(deck) in states
 
 def combat(p1, p2):
     while len(p1) > 0 and len(p2) > 0:
@@ -22,8 +22,8 @@ def recursiveCombat(p1, p2):
         if anyPreviousState(p1, previousP1) and anyPreviousState(p2, previousP2):
             return 1, p1
         else:
-            previousP1.append(p1.copy())
-            previousP2.append(p2.copy())
+            previousP1.append(tuple(p1))
+            previousP2.append(tuple(p2))
             card1 = p1.pop(0)
             card2 = p2.pop(0)
             if card1 <= len(p1) and card2 <= len(p2):
