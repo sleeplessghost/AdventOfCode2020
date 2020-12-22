@@ -2,9 +2,18 @@ def parseDeck(deck):
     return [int(n.strip()) for n in deck.splitlines()[1:]]
 
 def anyPreviousState(deck, states):
-    for state in states:
-        if len(deck) == len(state) and all(deck[i] == n for i,n in enumerate(state)): return True
-    return False
+    return any(len(deck) == len(state) and all(deck[i] == n for i,n in enumerate(state)) for state in states)
+
+def combat(p1, p2):
+    while len(p1) > 0 and len(p2) > 0:
+        card1 = p1.pop(0)
+        card2 = p2.pop(0)
+        winner = p1 if card1 > card2 else p2
+        winnerCard = max(card1, card2)
+        loserCard = min(card1, card2)
+        winner.append(winnerCard)
+        winner.append(loserCard)
+    return p1 if len(p1) > 0 else p2
 
 def recursiveCombat(p1, p2):
     previousP1 = []
@@ -34,21 +43,12 @@ def recursiveCombat(p1, p2):
     winner = p1 if len(p1) > 0 else p2
     return number, winner
 
-players = open('in/22.txt').read().split('\n\n')
+decks = open('in/22.txt').read().split('\n\n')
 
-p1, p2 = [parseDeck(p) for p in players]
-
-while len(p1) > 0 and len(p2) > 0:
-    card1 = p1.pop(0)
-    card2 = p2.pop(0)
-    winner = p1 if card1 > card2 else p2
-    winnerCard = max(card1, card2)
-    loserCard = min(card1, card2)
-    winner.append(winnerCard)
-    winner.append(loserCard)
-winner = p1 if len(p1) > 0 else p2
+p1, p2 = [parseDeck(d) for d in decks]
+winner = combat(p1, p2)
 print('part1:', sum((i+1) * n for i,n in enumerate(winner[::-1])))
 
-p1, p2 = [parseDeck(p) for p in players]
+p1, p2 = [parseDeck(d) for d in decks]
 number, winner = recursiveCombat(p1, p2)
 print('part2:', sum((i+1) * n for i,n in enumerate(winner[::-1])))
