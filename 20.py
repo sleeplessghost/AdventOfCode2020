@@ -132,5 +132,11 @@ for i in range(0, len(full), length):
         reassembled.append(list(newRow))
 
 hashCount = sum(sum(c == '#' for c in line) for line in reassembled)
-monsterCount = sum(isMonster(reassembled, x, y) for x in range(len(reassembled)) for y in range(len(reassembled)))
+monsterCount = 0
+for rotation in [ROTATE_0, ROTATE_90, ROTATE_180, ROTATE_270]:
+    for orientation in [UNFLIPPED, FLIPPED]:
+        monsters = sum(isMonster(reassembled, x, y) for x in range(len(reassembled)) for y in range(len(reassembled)))
+        monsterCount = max(monsterCount, monsters)
+        reassembled = flip(reassembled)
+    reassembled = rotate(reassembled)
 print('part2:', hashCount - (15 * monsterCount))
