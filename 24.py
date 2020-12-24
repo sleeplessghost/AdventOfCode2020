@@ -12,12 +12,12 @@ def adjacent(tiles, x, y):
 
 def step(tiles):
     newTiles = tiles.copy()
-    tilesToCheck = [[(x,y)] + getAdjacentPositions(x,y) for (x,y) in tiles.keys() if tiles[(x,y)]]
+    tilesToCheck = [[pos] + getAdjacentPositions(*pos) for pos in tiles.keys() if tiles[pos]]
     tilesToCheck = set([pos for array in tilesToCheck for pos in array])
-    for (x,y) in tilesToCheck:
-        adj = adjacent(tiles, x, y)
-        if tiles[(x,y)] and (adj == 0 or adj > 2): newTiles[(x,y)] = False
-        elif not tiles[(x,y)] and adj == 2: newTiles[(x,y)] = True
+    for pos in tilesToCheck:
+        adj = adjacent(tiles, *pos)
+        if tiles[pos] and (adj == 0 or adj > 2): newTiles[pos] = False
+        elif not tiles[pos] and adj == 2: newTiles[pos] = True
     return newTiles
 
 def countBlacks(tiles):
