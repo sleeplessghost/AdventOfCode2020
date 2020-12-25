@@ -17,3 +17,7 @@ Day 11 part 2:
 Day 17 part 1:
 
 <img src="https://user-images.githubusercontent.com/25903992/102653539-ff6f2d80-41be-11eb-90ae-184c7267803d.gif" width="400"/>
+
+Day 24 part 2:
+
+<img src="https://user-images.githubusercontent.com/25903992/103076707-437a8c00-461e-11eb-9469-ca1dc505b980.gif" width="400"/>
